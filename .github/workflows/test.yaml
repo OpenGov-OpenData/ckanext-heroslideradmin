@@ -59,4 +59,16 @@ jobs:
         ckan -c test.ini db init
     - name: Run tests
       if: ${{ matrix.ckan-version != '2.7' }}
-      run: pytest --ckan-ini=test.ini --cov=ckanext.heroslideradmin --disable-warnings ckanext/heroslideradmin/tests
+      run: pytest --ckan-ini=test.ini --cov=ckanext.heroslideradmin --cov-report xml:coverage.xml --disable-warnings ckanext/heroslideradmin/tests
+    - name: SonarQube Scan
+      uses: sonarsource/sonarqube-scan-action@master
+      with:
+        args: >
+          -Dsonar.projectKey=ckanext-heroslideradmin
+          -Dsonar.sources=ckanext/heroslideradmin
+          -Dsonar.tests=ckanext/heroslideradmin/tests
+          -Dsonar.exclusions=ckanext/heroslideradmin/tests/**
+          -Dsonar.python.coverage.reportPaths=coverage.xml
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_API_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_EXTERNAL_URL }}
