@@ -20,6 +20,7 @@ Primary style
 .hero-text-title,
 .hero-text-description {
   color: #ffffff;
+  background-color: rgba(1, 1, 1, 0.1);
   line-height: 1.25;
 }
 .hero-text-title {
